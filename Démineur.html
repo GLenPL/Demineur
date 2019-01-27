@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		
+		<title>Démineur</title>
+		
+		<link rel="icon" href="2-Contenus/favicon.ico"/>
+		<link rel="stylesheet" href="0-Codes/style.css"/>
+		
+		<!--jQuery-->
+		<script src="http://code.jquery.com/jquery.js" ></script>
+		<!--MathJax-->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+		
+		<script src="0-Codes/demineur.js" ></script> 
+	</head>
+
+	<body>
+	
+		<section id="principal">
+			<h1>Démineur</h1>
+			
+			<h2>La grille</h2>
+			<table id="grille">
+			</table>
+			<br/>
+			<p>Ce générateur utilise <a href="https://www.mathjax.org/#docs">MathJax</a>, <a href="https://antimatter15.com/project/jsgif/">jsgif</a> et <a href="https://jquery.com/">jQuery</a></p>
+			
+			<h2>Quelques explications</h2>
+			<p>Work in progress ...</p>
+		</section>
+		
+		<aside id="choix">
+					
+					
+			<div class="formPart"><!-- Gif -->
+				<input type="button" value="Nouvelle grille" id="bGrille" name="bGrille" title="Crée une nouvelle grille avec les caractéristiques demandées"/>
+			</div>
+			
+			<div class="formPart template"><!-- Normalement pas utilisé -->
+				<p id="testText"></p>
+				<input type="button" value="Click me !" id="testInput"/>
+				<div id="testDiv"></div>
+			</div>
+			
+			<p id="timeExe" title="Normalement 30 ms"></p>
+		</aside>
+			
+		<div id="info">
+			<p id="pInfo"></p>
+			<div id="chargement"></div>
+		</div>
+		
+	</body>
+
+</html>
