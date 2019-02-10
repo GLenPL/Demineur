@@ -11,8 +11,6 @@
 		
 		<!--jQuery-->
 		<script src="http://code.jquery.com/jquery.js" ></script>
-		<!--MathJax-->
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 		
 		<script src="0-Codes/demineur.js" ></script> 
 	</head>
@@ -20,13 +18,16 @@
 	<body>
 	
 		<section id="principal">
+			<div id="info">
+				<p id="pInfo"></p>
+			</div>
 			<h1>Démineur</h1>
 			
 			<h2>La grille</h2>
 			<table id="grille">
 			</table>
 			<br/>
-			<p>Ce générateur utilise <a href="https://www.mathjax.org/#docs">MathJax</a>, <a href="https://antimatter15.com/project/jsgif/">jsgif</a> et <a href="https://jquery.com/">jQuery</a></p>
+			<p>Ce démineur utilise <a href="https://www.mathjax.org/#docs">MathJax</a>.</p>
 			
 			<h2>Quelques explications</h2>
 			<p>Work in progress ...</p>
@@ -35,8 +36,25 @@
 		<aside id="choix">
 					
 					
-			<div class="formPart"><!-- Gif -->
+			<div class="formPart"><!-- Grille -->
 				<input type="button" value="Nouvelle grille" id="bGrille" name="bGrille" title="Crée une nouvelle grille avec les caractéristiques demandées"/>
+			</div>
+			
+			<div class="formPart"><!-- Reglages -->
+				<label for="nHauteur">Hauteur : </label>
+				<input type="number" value="10" id="nHauteur" name="nHauteur" title="Crée une nouvelle grille avec les caractéristiques demandées" min="2" max="100"/>
+				<br/>
+				<label for="nLargeur">Largeur : </label>
+				<input type="number" value="10" id="nLargeur" name="nLargeur" title="Crée une nouvelle grille avec les caractéristiques demandées" min="2" max="100"/>
+				<br/>
+				<label for="npBonbes">Proportion de bombes : </label>
+				<input type="number" value="0.12" id="npBombes" name="npBombes" title="Crée une nouvelle grille avec les caractéristiques demandées" min="0" max="1" step="0.01"/>
+				<br/>
+			</div>
+			
+			<div class="formPart template" id="dBR">
+				<p id="pBombesRestantes"></p>
+				<p id="pTemps"></p>
 			</div>
 			
 			<div class="formPart template"><!-- Normalement pas utilisé -->
@@ -48,10 +66,7 @@
 			<p id="timeExe" title="Normalement 30 ms"></p>
 		</aside>
 			
-		<div id="info">
-			<p id="pInfo"></p>
-			<div id="chargement"></div>
-		</div>
+		
 		
 	</body>
 

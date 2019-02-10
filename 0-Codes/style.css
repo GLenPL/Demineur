@@ -33,7 +33,8 @@ td *{
 	position: absolute;
 	left: 20%;
 	width: 56%;
-	min-width: 50%;
+	min-width: 55%;
+	z-index:1;
 }
 #principal p{
 	text-align: justify;
@@ -80,6 +81,7 @@ td *{
 	padding: 5px;
 	overflow-y: auto;
 	
+	z-index:1;
 	transition: opacity 0.1s;
 }
 .formPart{
@@ -105,21 +107,6 @@ td *{
 	font-size: 1.1em;
 	font-weight:bold;
 }
-.symb{
-	border: none;
-	padding: 5px;
-	overflow: auto;
-}
-#choix .symb:hover,.symb div:hover{
-	background-color:#efefef;
-}
-#choix .symb:nth-child(1n+3){
-	border-top: 1px #242450 solid;
-}
-#choix .symb:hover{
-	border-left:none;
-	border-right:none;
-}
 .formPart img{
 	float:right;
 	padding: 3px;
@@ -135,6 +122,12 @@ td *{
 .template{
 	display:none;
 }
+.cache{
+	display:none;
+}
+.montre{
+	display: initial;
+}
 #menu a, #menu a:visited{
 	border:1px solid;
 	padding: 5px;
@@ -146,27 +139,21 @@ td *{
 }
 #info{
 	position: absolute;
-	bottom:1000px;
-	right:10px;
-	max-width:20%;
+	bottom:100%;
+	margin: 0 auto;
+	width:95%;
 	
 	border: 1px solid;
-	padding:5px;
-	margin:10px;
 	
 	opacity:0;
+	z-index: -1;
 	transition: bottom 0.5s,opacity 0.5s;
+	background-color: #d0c0f0;
 }
 #info p{
-	text-align:justify;
+	text-align:center;
+	font-size: 4em;
 }
-#chargement{
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index:-2;
-	
-	background-color: #d0c0f0;
 }
 /*Quelques tags nécessaires*/{
 em{

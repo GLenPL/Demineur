@@ -1,7 +1,14 @@
 ﻿window.onload = function(){
-		{//Récupération des éléments HTML
+	{//Récupération des éléments HTML
 		var tGrille = document.getElementById('grille');
 		var bGrille = document.getElementById('bGrille');
+		
+		var eHauteur = document.getElementById('nHauteur');
+		var eLargeur = document.getElementById('nLargeur');
+		var epBombes = document.getElementById('npBombes');
+		var edBR = document.getElementById("dBR")
+		var eBombesRestantes = document.getElementById('pBombesRestantes');
+		var eTemps = document.getElementById('pTemps');
 		
 		var timeExe = document.getElementById('timeExe');
 		
@@ -14,94 +21,188 @@
 		var info = document.getElementById('info');
 		var dChoix = document.getElementById('choix');
 		var chargement = $('#chargement');
-		}
+	}
 		
 		{//toutes les constantes et variables uilisées
 		//constantes et variables du temps
-		var timeNew = new Date();
-		var timeOld = new Date();
-		var temps;
 		//sur la grille
 		var tailleImage = 40;
+		var jeu = false;
+		var compteur;
+		var hx,hy;
+		var msgCount = 0;
 		}
 		
-	bGrille.addEventListener('click',function(){creerGrille(10,10,0.1);});
+	bGrille.addEventListener('click',function(){creerGrille(parseFloat(epBombes.value));});
 	
-	function creerGrille(hx,hy,pBombe){
-		grille.innerHTML = ""
-		innerHTMLtext = ""
-		for (var i = 1; i<=hx; i++){
-			innerHTMLtext += "<tr id=\"ligne "+ i + "\" height=\"" + (tailleImage+4) + "px\" >";
-			for (var j = 1; j <= hx; j++){
-				var id = 'img ' + i + ' ' + j;
-				innerHTMLtext += '<td id=\"case ' + i + ' ' + j + '\" width=\"' + (tailleImage+2) + 'px\" ';
-				if (Math.random() < pBombe){
-					innerHTMLtext += '  class="-1" ';
-				}
-				innerHTMLtext += "></td>";
-			}
-			innerHTMLtext += "</tr>";
-		}	
-		grille.innerHTML = innerHTMLtext;
+	var taille = 42;
+	
+	function creerGrille(pBombe){
+		hx = parseInt(eHauteur.value);
+		hy = parseInt(eLargeur.value);
+		if (jeu){clearInterval(compteur);}
+		var tOld = new Date();
+		compteur = setInterval(function(){
+			var tNew = new Date();
+			var dt = tNew.getTime() - tOld.getTime();
+			var sec = Math.floor(dt/1000);
+			var minu = Math.floor(sec/60);
+			sec = sec%60;
+			if (sec<10){sec = "0" + sec;}
+			if (minu < 10){minu = "0" + minu}
+			eTemps.innerHTML = minu + ":" + sec;
+			
+		},1000);
 		
-		for (var i = 1; i <= hx; i++){
-			for (var j = 1; j <= hx; j++){
-				var cEC = document.getElementById('case ' + i + ' ' + j);
-				var fx = 'document.getElementById("img ' + i + ' ' + j + '").style = "";';
-				cEC.setAttribute('onclick',fx);
-				if (cEC.className == "-1"){
-					cEC.innerHTML = '<img src="2-Contenus/favicon.ico" style="display: none;" id="img ' + i + ' ' + j + '" width="'+tailleImage+'" height="'+tailleImage+'"/>';
-					cEC.addEventListener('click',function(){
-						for (k=1; k<=hx; k++){
-							for (l = 1; l<=hy; l++){
-								document.getElementById('img ' + (k) + ' ' + (l)).style = "";
-							}
-						}
-					});
+		var width =0.54*( window.innerWidth
+					|| document.documentElement.clientWidth
+					|| document.body.clientWidth);
+		
+		taille = Math.floor(width/hy);
+		while ((grille.hasChildNodes())){
+			grille.removeChild(grille.childNodes[0])
+		}
+		
+		var nvCase = document.createElement('td')
+		var nvLigne = document.createElement('tr')
+		for (var i = 1; i<=hx; i++){
+			var ligneTempo = nvLigne.cloneNode();
+			ligneTempo.id = "ligne " + i;
+			tGrille.appendChild(ligneTempo);
+			for (var j = 1; j <= hy; j++){
+				var caseTempo = nvCase.cloneNode();
+				caseTempo.id = "case " + i + " " + j;
+				caseTempo.width = taille;
+				caseTempo.height = taille;
+				if (Math.random() < pBombe){
+					caseTempo.className = 9;
 				}
 				else{
+				}
+				document.getElementById("ligne " + i).appendChild(caseTempo);
+			}
+		}
+		
+		var nvImage = document.createElement("IMG");
+		for (var i = 1; i <= hx; i++){
+			for (var j = 1; j <= hy; j++){
+				var cEC = document.getElementById('case ' + i + ' ' + j);
+				if (cEC.className != "9"){	
 					var voisins = 0
 					for (k=-1; k<=1; k++){
 						for (l = -1; l<=1; l++){
 							if (i+k<=hx && i+k>0 && j+l<=hy && j+l>0){
-								if (document.getElementById('case ' + (k+i) + ' ' + (j+l)).className == "-1"){voisins++}
+								if (document.getElementById('case ' + (k+i) + ' ' + (j+l)).className == "9"){voisins++}
 							}
 						}
 					}
-					cEC.innerHTML = '<img src="2-Contenus/'+voisins+'.png" id="img ' + i + ' ' + j + '" style="display: none;"  />';
-					if (voisins==0){
-						fx += 'console.log("img ' + i + ' ' + j + '");';
-						fx += 'alert('+i+' '+j+');';
-					}
+					cEC.className = voisins;
 				}
-				cEC.setAttribute('onclick',fx);
+				var imageTempo = nvImage.cloneNode();
+				imageTempo.src = "2-Contenus/" + cEC.className + ".png";
+				imageTempo.id = "img " + i + " " + j;
+				imageTempo.width = taille-2;
+				imageTempo.height = taille-2;
+				imageTempo.className = "cache";
+				cEC.appendChild(imageTempo);
+				cEC.onclick = function(){montrer(this);};
 			}
 		}
 		
-		
-		
+		edBR.className = "formPart";
+		n = $(".cache").length - $(".9").length;
+		eBombesRestantes.innerHTML = "Il reste " + n + " cases sans bombe.";
+		jeu = true;
 	}
 	
+	eTestInput.onclick = function(){
+	}
+	
+	function montrer(el){
+		if (jeu){
+			el.firstChild.className = "montre";
+			
+			if (el.className == "0"){
+				var maRegExp = /case\s(\d*)\s(\d*)/;
+				var regExec = maRegExp.exec(el.id);
+				const i = parseInt(regExec[1]);
+				const j = parseInt(regExec[2]);
+				var voisins = [];
+				for (k=-1; k<=1; k++){
+					for (l = -1; l<=1; l++){
+						if(document.getElementById("case "+ (i+k) + " " + (j+l))){
+							if (document.getElementById("case "+ (i+k) + " " + (j+l)).firstChild.className == "cache"){
+								voisins.push(document.getElementById("case "+ (i+k) + " " + (j+l)));
+							}
+						}
+					}
+				}
+				voisins.forEach(montrer);
+			}
+			n = $(".cache").length - $(".9").length;
+			if (n>1){
+				eBombesRestantes.innerHTML = "Il reste " + n + " cases sans bombe.";
+			}
+			else{
+				eBombesRestantes.innerHTML = "Il reste une unique case sans bombe !"
+			}
+			if (el.className == "9"){
+				defaite();
+			}
+			if (jeu && n==0){
+				victoire();
+			}
+			
+		}
+	}
+	
+	function defaite(){
+		clearInterval(compteur)
+		eBombesRestantes.innerHTML = "Défaite !";
+		jeu = false;
+		
+		infoMessage('Perdu !', 3000, false, 100,100);
+		function montrerSuivante(x,y){
+			var cEC = document.getElementById('case ' + x + ' ' + y);
+			y += 1;
+			if (y>hy){
+				y=1;
+				x +=1;
+			}
+			if (x<=hx){
+				if (cEC.className == '9'){
+					cEC.firstChild.className = 'montre';
+					montrerSuivante(x,y);
+				}
+				else{
+					montrerSuivante(x,y);
+				}
+			}
+		}
+		montrerSuivante(1,1);
+	}
+	
+	function victoire(){
+		clearInterval(compteur)
+		jeu = false;
+		eBombesRestantes.innerHTML = "Bon travail !";
+		infoMessage('Victoire !', 3000, false, 100,100);
+	}
 	
 	function infoMessage(message, temps, bChargement, value, max){
 		
 		msgCount++;
 		info.style.opacity = 1;
-		info.style.bottom = "10px";
-		
+		info.style.bottom = "50%";
+		info.style.zIndex = "2";
 		pInfo.innerHTML = message;
-		chargement.css('height',(info.offsetHeight-2) + 'px');
 		
-		if(bChargement){
-			chargement.css('width',(info.offsetWidth * value / max) + 'px');
-		}
-		else{
-			chargement.css('width',(info.offsetWidth-2) + 'px');
-		}
+		
 		setTimeout(function(){
 			if(msgCount == 1){
 				info.style.opacity = 0;
-				info.style.bottom = "100px";
+				info.style.bottom = "100%";
+				info.style.zIndex = "0";
 			}
 			msgCount--}
 		, temps);
