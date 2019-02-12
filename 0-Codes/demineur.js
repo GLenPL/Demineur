@@ -20,16 +20,11 @@
 		
 		var info = document.getElementById('info');
 		var dChoix = document.getElementById('choix');
-		var chargement = $('#chargement');
 	}
 		
-		{//toutes les constantes et variables uilisées
-		//constantes et variables du temps
-		//sur la grille
-		var tailleImage = 40;
+		{//toutes les constantes et variables uilisées sur la grille
 		var jeu = false;
-		var compteur;
-		var hx,hy;
+		var compteur, hx, hy;
 		var msgCount = 0;
 		}
 		
@@ -58,7 +53,8 @@
 					|| document.documentElement.clientWidth
 					|| document.body.clientWidth);
 		
-		taille = Math.floor(width/hy);
+		taille = parseInt(Math.floor(width/hy)-1);
+		console.log(taille);
 		while ((grille.hasChildNodes())){
 			grille.removeChild(grille.childNodes[0])
 		}
@@ -140,19 +136,10 @@
 				voisins.forEach(montrer);
 			}
 			n = $(".cache").length - $(".9").length;
-			if (n>1){
-				eBombesRestantes.innerHTML = "Il reste " + n + " cases sans bombe.";
-			}
-			else{
-				eBombesRestantes.innerHTML = "Il reste une unique case sans bombe !"
-			}
-			if (el.className == "9"){
-				defaite();
-			}
-			if (jeu && n==0){
-				victoire();
-			}
-			
+			if (n>1){eBombesRestantes.innerHTML = "Il reste " + n + " cases sans bombe.";}
+			else{eBombesRestantes.innerHTML = "Il reste une unique case sans bombe !"}
+			if (el.className == "9"){defaite();}
+			if (jeu && n==0){victoire();}
 		}
 	}
 	
@@ -161,7 +148,7 @@
 		eBombesRestantes.innerHTML = "Défaite !";
 		jeu = false;
 		
-		infoMessage('Perdu !', 3000, false, 100,100);
+		infoMessage('Perdu !', 3000);
 		function montrerSuivante(x,y){
 			var cEC = document.getElementById('case ' + x + ' ' + y);
 			y += 1;
@@ -186,17 +173,15 @@
 		clearInterval(compteur)
 		jeu = false;
 		eBombesRestantes.innerHTML = "Bon travail !";
-		infoMessage('Victoire !', 3000, false, 100,100);
+		infoMessage('Victoire !', 3000);
 	}
 	
-	function infoMessage(message, temps, bChargement, value, max){
-		
+	function infoMessage(message, temps){
 		msgCount++;
-		info.style.opacity = 1;
+		info.style.opacity = 0.75;
 		info.style.bottom = "50%";
 		info.style.zIndex = "2";
 		pInfo.innerHTML = message;
-		
 		
 		setTimeout(function(){
 			if(msgCount == 1){
@@ -208,11 +193,9 @@
 		, temps);
 	}
 }
-
 function nthSibling(elem,n){
 	var ret;
 	if(n==0){ret = elem;}
 	else{ret = nthSibling(elem,n-1).nextElementSibling;}
 	return ret;
 }
-

@@ -9,6 +9,7 @@ h1{
 table, td{
 	border: solid 1px;
 	border-spacing: 0px;
+	background-color:#d0c0f0;
 }
 td{
 	padding: 0px;
@@ -141,7 +142,7 @@ td *{
 	position: absolute;
 	bottom:100%;
 	margin: 0 auto;
-	width:95%;
+	width:80%;
 	
 	border: 1px solid;
 	
